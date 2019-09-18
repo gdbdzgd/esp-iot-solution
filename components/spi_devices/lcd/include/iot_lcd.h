@@ -68,6 +68,7 @@
 typedef enum {
     LCD_MOD_ILI9341 = 0,
     LCD_MOD_ST7789 = 1,
+    LCD_MOD_ILI9488 = 2,
     LCD_MOD_AUTO_DET = 3,
 } lcd_model_t;
 

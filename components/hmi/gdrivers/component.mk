@@ -90,7 +90,6 @@ else
             COMPONENT_SRCDIRS += ./gdisp/ILI9341
             COMPONENT_ADD_INCLUDEDIRS += ./gdisp/ILI9341
             endif
-
             ifdef CONFIG_LVGL_DRIVER_ST7789
             COMPONENT_SRCDIRS += ./gdisp/ST7789
             COMPONENT_ADD_INCLUDEDIRS += ./gdisp/ST7789

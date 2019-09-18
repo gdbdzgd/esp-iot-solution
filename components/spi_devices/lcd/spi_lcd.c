@@ -82,6 +82,30 @@ DRAM_ATTR static const lcd_init_cmd_t st7789_init_cmds[] = {
     {0x29, {0}, 0x80},
     {0, {0}, 0xff},
 };
+DRAM_ATTR static const lcd_init_cmd_t ili9488_init_cmds[] = {
+   {0x01, {0}, 0x80},                   //  1: Software reset, no args, w/delay
+   {0xE0, {0x00, 0x03, 0x09, 0x08, 0x16, 0x0A, 0x3F, 0x78, 0x4C, 0x09, 0x0A, 0x08, 0x16, 0x1A, 0x0F}, 15},
+   {0xE1, {0x00, 0x16, 0x19, 0x03, 0x0F, 0x05, 0x32, 0x45, 0x46, 0x04, 0x0E, 0x0D, 0x35, 0x37, 0x0F}, 15}, 
+   {0xC0, {0x17, 0x15}, 2},
+   {0xC1, {0x41}, 1},
+   {0xC5, {0x00, 0x12, 0x80}, 3},
+   {0x36, {0x28},1},         // Memory Access Control (orientation), set to portrait
+   // *** INTERFACE PIXEL FORMAT: 0x66 -> 18 bit;
+   {0x3a, {0x66},1},
+   {0xB0, {0x00},1},
+   {0xB1, {0xA0},1},
+   {0xB4, {0x02},1},
+   {0xB6, {0x02,0x02},2}, 
+   {0xE9, {0x00},1},
+   {0x53, {0x28},1},
+   {0x51, {0x7F},1},
+   {0xF7, {0xA9, 0x51, 0x2C, 0x02},4},    // D7 stream, loose
+   {0x11, {0}, 0x80},  //Exit Sleep 120,
+   {0x29, {0}, 0x80},      //Display on
+   {0, {0}, 0xff},      //Display on
+ };
+
+
 
 #define LCD_CMD_LEV   (0)
 #define LCD_DATA_LEV  (1)
@@ -189,6 +213,8 @@ uint32_t lcd_init(lcd_conf_t* lcd_conf, spi_device_handle_t *spi_wr_dev, lcd_dc_
         lcd_init_cmds = st7789_init_cmds;
     } else if(lcd_conf->lcd_model == LCD_MOD_ILI9341) {
         lcd_init_cmds = ili_init_cmds;
+    } else if(lcd_conf->lcd_model == LCD_MOD_ILI9488) {
+        lcd_init_cmds = ili9488_init_cmds;
     } else if(lcd_conf->lcd_model == LCD_MOD_AUTO_DET) {
         if (((lcd_id >> 8) & 0xff) == 0x42) {
             lcd_init_cmds = st7789_init_cmds;
@@ -196,6 +222,7 @@ uint32_t lcd_init(lcd_conf_t* lcd_conf, spi_device_handle_t *spi_wr_dev, lcd_dc_
             lcd_init_cmds = ili_init_cmds;
         }
     }
+    printf("lcd id:%x\n",lcd_id);
     assert(lcd_init_cmds != NULL);
     //Send all the commands
     while (lcd_init_cmds[cmd].databytes!=0xff) {

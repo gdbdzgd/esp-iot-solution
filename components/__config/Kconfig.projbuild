@@ -1094,6 +1094,8 @@ menu "IoT Solution settings"
                         
                         config UGFX_DRIVER_ILI9341
                             bool "ILI9341"
+                        config UGFX_DRIVER_ILI9488
+                            bool "ILI9488"
                         config UGFX_DRIVER_SSD1306
                             bool "SSD1306"
                         config UGFX_DRIVER_ST7789
@@ -1246,6 +1248,76 @@ menu "IoT Solution settings"
                             default 23
 
                     endmenu
+                    menu "ILI9488 Screen Pin Configuration"
+                        depends on UGFX_DRIVER_ILI9488
+
+                        choice UGFX_LCD_SPI_SELECT
+                            prompt "Select SPI Port"
+                            default UGFX_LCD_HSPI
+                        
+                            config UGFX_LCD_HSPI
+                                bool "Select HSPI"
+
+                            config UGFX_LCD_VSPI
+                                bool "Select VSPI"
+
+                        endchoice
+                        config UGFX_LCD_SPI_NUM
+                            int
+                            default 1 if UGFX_LCD_HSPI
+                            default 2 if UGFX_LCD_VSPI
+                        
+                        choice UGFX_BCKL_ACTIVE_LEVEL_OPTIONAL
+                            prompt "Select Backlight Active Level"
+                            default UGFX_BCKL_ACTIVE_LEVEL_HIGH
+
+                            config UGFX_BCKL_ACTIVE_LEVEL_LOW
+                                bool "Backlight Active Low"
+                        
+                            config UGFX_BCKL_ACTIVE_LEVEL_HIGH
+                                bool "Backlight Active High"
+
+                        endchoice
+                        config UGFX_BCKL_ACTIVE_LEVEL
+                            int
+                            default 0 if UGFX_BCKL_ACTIVE_LEVEL_LOW
+                            default 1 if UGFX_BCKL_ACTIVE_LEVEL_HIGH
+
+                        config UGFX_LCD_SPI_CLOCK
+                            int "uGFX LCD SPI Clock"
+                            range 0 40000000
+                            default 20000000
+
+                        config UGFX_LCD_MISO_GPIO
+                            int "uGFX LCD MISO GPIO"
+                            range 0 39
+                            default 19
+                        config UGFX_LCD_MOSI_GPIO
+                            int "uGFX LCD MOSI GPIO"
+                            range 0 39
+                            default 23
+                        config UGFX_LCD_CLK_GPIO
+                            int "uGFX LCD CLK GPIO"
+                            range 0 39
+                            default 18
+                        config UGFX_LCD_CS_GPIO
+                            int "uGFX LCD CS GPIO"
+                            range 0 39
+                            default 5
+                        config UGFX_LCD_DC_GPIO
+                            int "uGFX LCD DC GPIO"
+                            range 0 39
+                            default 4
+                        config UGFX_LCD_RESET_GPIO
+                            int "uGFX LCD RESET GPIO"
+                            range 0 39
+                            default 2
+                        config UGFX_LCD_BL_GPIO
+                            int "uGFX LCD BL GPIO"
+                            range 0 39
+                            default 0
+
+                    endmenu
                     
                     menu "NT35510 Screen Pin Configuration"
                         depends on UGFX_DRIVER_NT35510
@@ -1394,6 +1466,22 @@ menu "IoT Solution settings"
                         help
                             "uGFX Screen Height (pixels)"
 
+                    config ILI9488_UGFX_DRIVER_SCREEN_WIDTH
+                        depends on UGFX_DRIVER_ILI9488
+                        int "uGFX Screen Width (pixels)"
+                        range 0 5000
+                        default 320
+                        help
+                            "uGFX Screen Width (pixels)"
+
+                    config ILI9488_UGFX_DRIVER_SCREEN_HEIGHT
+                        depends on UGFX_DRIVER_ILI9488
+                        int "uGFX Screen Height (pixels)"
+                        range 0 5000
+                        default 480
+                        help
+                            "uGFX Screen Height (pixels)"
+
                     config SSD1306_UGFX_DRIVER_SCREEN_WIDTH
                         depends on UGFX_DRIVER_SSD1306
                         int "uGFX Screen Width (pixels)"
@@ -1445,6 +1533,7 @@ menu "IoT Solution settings"
                     config UGFX_DRIVER_SCREEN_WIDTH
                         int
                         default ILI9341_UGFX_DRIVER_SCREEN_WIDTH if UGFX_DRIVER_ILI9341
+                        default ILI9488_UGFX_DRIVER_SCREEN_WIDTH if UGFX_DRIVER_ILI9488
                         default SSD1306_UGFX_DRIVER_SCREEN_WIDTH if UGFX_DRIVER_SSD1306
                         default ST7789_UGFX_DRIVER_SCREEN_WIDTH  if UGFX_DRIVER_ST7789
                         default NT35510_UGFX_DRIVER_SCREEN_WIDTH if UGFX_DRIVER_NT35510
@@ -1452,6 +1541,7 @@ menu "IoT Solution settings"
                     config UGFX_DRIVER_SCREEN_HEIGHT
                         int
                         default ILI9341_UGFX_DRIVER_SCREEN_HEIGHT if UGFX_DRIVER_ILI9341
+                        default ILI9488_UGFX_DRIVER_SCREEN_HEIGHT if UGFX_DRIVER_ILI9488
                         default SSD1306_UGFX_DRIVER_SCREEN_HEIGHT if UGFX_DRIVER_SSD1306
                         default ST7789_UGFX_DRIVER_SCREEN_HEIGHT  if UGFX_DRIVER_ST7789
                         default NT35510_UGFX_DRIVER_SCREEN_HEIGHT if UGFX_DRIVER_NT35510
@@ -1649,6 +1739,8 @@ menu "IoT Solution settings"
                         
                         config LVGL_DRIVER_ILI9341
                             bool "ILI9341"
+                        config LVGL_DRIVER_ILI9488
+                            bool "ILI9488"
                         config LVGL_DRIVER_SSD1306
                             bool "SSD1306"
                         config LVGL_DRIVER_ST7789
@@ -1801,6 +1893,76 @@ menu "IoT Solution settings"
                             default 23
 
                     endmenu
+                    menu "ILI9488 Screen Pin Configuration"
+                        depends on LVGL_DRIVER_ILI9488
+
+                        choice LVGL_LCD_SPI_SELECT
+                            prompt "Select SPI Port"
+                            default LVGL_LCD_VSPI
+                        
+                            config LVGL_LCD_HSPI
+                                bool "Select HSPI"
+
+                            config LVGL_LCD_VSPI
+                                bool "Select VSPI"
+
+                        endchoice
+                        config LVGL_LCD_SPI_NUM
+                            int
+                            default 1 if LVGL_LCD_HSPI
+                            default 2 if LVGL_LCD_VSPI
+                        
+                        choice LVGL_BCKL_ACTIVE_LEVEL_OPTIONAL
+                            prompt "Select Backlight Active Level"
+                            default LVGL_BCKL_ACTIVE_LEVEL_HIGH
+
+                            config LVGL_BCKL_ACTIVE_LEVEL_LOW
+                                bool "Backlight Active Low"
+                        
+                            config LVGL_BCKL_ACTIVE_LEVEL_HIGH
+                                bool "Backlight Active High"
+
+                        endchoice
+                        config LVGL_BCKL_ACTIVE_LEVEL
+                            int
+                            default 0 if LVGL_BCKL_ACTIVE_LEVEL_LOW
+                            default 1 if LVGL_BCKL_ACTIVE_LEVEL_HIGH
+
+                        config LVGL_LCD_SPI_CLOCK
+                            int "LittlevGL LCD SPI Clock"
+                            range 0 40000000
+                            default 20000000
+
+                        config LVGL_LCD_MISO_GPIO
+                            int "LittlevGL LCD MISO GPIO"
+                            range 0 39
+                            default 19
+                        config LVGL_LCD_MOSI_GPIO
+                            int "LittlevGL LCD MOSI GPIO"
+                            range 0 39
+                            default 23
+                        config LVGL_LCD_CLK_GPIO
+                            int "LittlevGL LCD CLK GPIO"
+                            range 0 39
+                            default 18
+                        config LVGL_LCD_CS_GPIO
+                            int "LittlevGL LCD CS GPIO"
+                            range 0 39
+                            default 5
+                        config LVGL_LCD_DC_GPIO
+                            int "LittlevGL LCD DC GPIO"
+                            range 0 39
+                            default 4
+                        config LVGL_LCD_RESET_GPIO
+                            int "LittlevGL LCD RESET GPIO"
+                            range 0 39
+                            default 2
+                        config LVGL_LCD_BL_GPIO
+                            int "LittlevGL LCD BL GPIO"
+                            range 0 39
+                            default 0
+
+                    endmenu
                     
                     menu "NT35510 Screen Pin Configuration"
                         depends on LVGL_DRIVER_NT35510
@@ -1949,6 +2111,22 @@ menu "IoT Solution settings"
                         help
                             "LittlevGL Screen Height (pixels)"
 
+                    config ILI9488_LVGL_DRIVER_SCREEN_WIDTH
+                        depends on LVGL_DRIVER_ILI9488
+                        int "LittlevGL Screen Width (pixels)"
+                        range 0 5000
+                        default 320
+                        help
+                            "LittlevGL Screen Width (pixels)"
+
+                    config ILI9488_LVGL_DRIVER_SCREEN_HEIGHT
+                        depends on LVGL_DRIVER_ILI9488
+                        int "LittlevGL Screen Height (pixels)"
+                        range 0 5000
+                        default 480
+                        help
+                            "LittlevGL Screen Height (pixels)"
+
                     config SSD1306_LVGL_DRIVER_SCREEN_WIDTH
                         depends on LVGL_DRIVER_SSD1306
                         int "LittlevGL Screen Width (pixels)"
@@ -2000,13 +2178,14 @@ menu "IoT Solution settings"
                     config LVGL_DRIVER_SCREEN_WIDTH
                         int
                         default ILI9341_LVGL_DRIVER_SCREEN_WIDTH if LVGL_DRIVER_ILI9341
+                        default ILI9488_LVGL_DRIVER_SCREEN_WIDTH if LVGL_DRIVER_ILI9488
                         default SSD1306_LVGL_DRIVER_SCREEN_WIDTH if LVGL_DRIVER_SSD1306
                         default ST7789_LVGL_DRIVER_SCREEN_WIDTH  if LVGL_DRIVER_ST7789
                         default NT35510_LVGL_DRIVER_SCREEN_WIDTH if LVGL_DRIVER_NT35510
                             
                     config LVGL_DRIVER_SCREEN_HEIGHT
                         int
-                        default ILI9341_LVGL_DRIVER_SCREEN_HEIGHT if LVGL_DRIVER_ILI9341
+                        default ILI9488_LVGL_DRIVER_SCREEN_HEIGHT if LVGL_DRIVER_ILI9488
                         default SSD1306_LVGL_DRIVER_SCREEN_HEIGHT if LVGL_DRIVER_SSD1306
                         default ST7789_LVGL_DRIVER_SCREEN_HEIGHT  if LVGL_DRIVER_ST7789
                         default NT35510_LVGL_DRIVER_SCREEN_HEIGHT if LVGL_DRIVER_NT35510

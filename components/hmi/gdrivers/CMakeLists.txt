@@ -122,6 +122,14 @@ else()
                                                 "gdisp/ILI9341")
             endif()
 
+            if(CONFIG_LVGL_DRIVER_ILI9488)
+                set(COMPONENT_SRCS "${COMPONENT_SRCS}"
+                                    "gdisp/ILI9488/gdisp_lld_ILI9488.c"
+                                    "gdisp/ILI9488/ILI9488_adapter.cpp")
+                set(COMPONENT_ADD_INCLUDEDIRS "${COMPONENT_ADD_INCLUDEDIRS}"
+                                                "gdisp/ILI9488")
+            endif()
+
             if(CONFIG_LVGL_DRIVER_ST7789)
                 set(COMPONENT_SRCS "${COMPONENT_SRCS}"
                                     "gdisp/ST7789/gdisp_lld_ST7789.c"
